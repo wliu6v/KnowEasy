@@ -58,8 +58,27 @@
 
 使用 Windows 自带的 iExpress 工具进行打包。在“运行”中输入 `iexpress` 即可运行。
 
-![](file://C:/Users/liuwei/Documents/MyDocuments/KnowEasy/img/BrowserPlugin_01.png)
+![](https://raw.github.com/wliu6v/KnowEasy/master/img/BrowsePlugin_01.png)
 
+
+打包时选择第三项
+
+![](https://raw.github.com/wliu6v/KnowEasy/master/img/BrowsePlugin_02.png)
+
+
+将上一步中所有的文件 （ActiveX控件文件，控件所依赖的文件，inf 文件) 都添加进来
+
+![](https://raw.github.com/wliu6v/KnowEasy/master/img/BrowsePlugin_03.png)
+
+输入要生成的 cab 文件名。同时要勾选 "Store files using Long File Name inside Package" 选项。文件名需要符合 8,3 规则，就是说文件名应该不能长于8位，扩展名不能长于3位（大概如此吧，我猜的）。如果文件名需要长于八位，可以在成功生成 cab 文件之后直接进行重命名。
+
+![](https://raw.github.com/wliu6v/KnowEasy/master/img/BrowsePlugin_04.png)
+
+下一步，选择 "Don't save"
+
+![](https://raw.github.com/wliu6v/KnowEasy/master/img/BrowsePlugin_05.png)
+
+之后就可以成功生成 cab 文件了。
 
 ##	3.	制作数字证书
 

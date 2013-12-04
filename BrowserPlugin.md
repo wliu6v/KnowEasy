@@ -80,9 +80,98 @@
 
 之后就可以成功生成 cab 文件了。
 
+实际上，这时候已经可以在本地使页面自动加载控件了。但如果要将控件放在网上，让页面能够自动进行下载，那么就要为其制作一个数字证书。
 
 ##	3.	制作数字证书
 
+首先下载数字签名工具包 [http://files.cnblogs.com/babyt/SignTool.rar](http://files.cnblogs.com/babyt/SignTool.rar)
 
+将下载之后的文件夹添加到 path 路径中，然后在任意目录建立证书与私钥文件。打开 cmd， 输入
+
+	makecert /sv "project.PVK" /r /n "CN=Kingtrust.net, O=liuwei" project.cer
+
+就可以生成私钥文件与数字证书了。这期间需要创建私钥密码并输入多次。需要牢牢记住该密码。
+
+打开证书文件，安装证书，将其装到 "受信任的根证书颁发机构" 中，然后运行 "signcode.exe" 工具。
+
+-	要经过数字签名的文件选择刚才制作的 cab 文件
+-	签名选项选择 “自定义”
+-	"从文件选择...", 选择刚才生成的证书文件 .cer
+-	选择私钥文件 .pvk 。其他选项保持默认即可
+-	签名算法默认
+-	其他证书默认
+-	数据描述随意
+-	时间戳保持默认，不需要添加。
+
+之后如果提示成功即完成了对该 CAB 文件的签名。在浏览器中安装之前还需要先安装数字证书，用户需要将数字证书添加到受信任的根证书颁发机构。
 
 ##	4.	网页检查插件并自动安装插件
+
+页面首先要判断浏览器类型
+
+	var Sys = {};
+	var ua = navigator.userAgent.toLowerCase();
+	var s;
+	(s = ua.match(/(msie\s|trident.*rv:)([\w.]+)/)) ? Sys.ie = s[1] :
+	(s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+	(s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+	(s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+	(s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+
+如果是 IE 浏览器，则加载 ActiveX控件
+
+	if (Sys.ie) {
+		document.write('<object ID="plugin" WIDTH=0 HEIGHT=0 CLASSID="CLSID:7585D848-1BD6-4F8C-A32C-70E0A5C0F2F7" CODEBASE="http://yourproject.kingtrust.net/yourproject.cab#version=1,0,0,0"><PARAM NAME="_Version" VALUE="65536"><PARAM NAME="_ExtentX" VALUE="2646"><PARAM NAME="_ExtentY" VALUE="1323"><PARAM NAME="_StockProps" VALUE="0"></object><br />');
+	} 
+
+要注意将替换 CLASSID 中的 CLSID 替换为实际的值。CODEBASE 属性就指明了当前页面所需要的CAB应该从何处获取以及应使用哪个版本。
+
+要判断控件是否存在。有两种方法：
+
+	if (Sys.ie) {
+		var plugin = document.getElementById("plugin");
+		if (plugin.object == null) {
+			alert("插件未安装");		
+		}
+	}
+
+或者
+
+	if (Sys.ie) {
+		var plugin = null;
+		try {
+			plugin = new ActiveXObject("ActiveXProject.Project.1");
+		} catch (e) {
+			alert("插件未安装");
+		}
+	}
+
+第二种方式的优点在于无需在页面上放置插件即可进行判断。需要将ActiveXObject 内的字符串替换为上文中提到的内容。
+
+
+
+##	5.	尾巴
+
+卸载安装的 cab 文件，可编写一个 bat 文件，然后右键“以管理员权限运行”
+
+	@echo off
+	del "%windir%\yourproject.inf"
+	del "%windir%\yourproject.ocx"
+	del "%windir%\dll1.dll"
+	del "%windir%\dll2.dll"
+
+
+#	多线程
+
+##	进程与线程
+
+进程是表示资源分配的基本单位，线程是系统中并发执行的单位。
+
+##	pthread
+
+通过 `#include <pthread.h>` 添加多线程相关的头文件。
+
+使用 g++ 编译时添加参数 `-lpthread` 添加对应的库。
+
+
+

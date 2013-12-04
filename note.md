@@ -46,7 +46,7 @@ SVN 的配置文件通常是 `~/.subversion/config` 。我们可以修改 `globa
   
 #	Bash
 
-http://blog.csdn.net/wooin/article/details/580772
+[http://blog.csdn.net/wooin/article/details/580772](http://blog.csdn.net/wooin/article/details/580772)
 
 ## 一个简单的 Hello World 程序
 
@@ -63,3 +63,10 @@ http://blog.csdn.net/wooin/article/details/580772
 我们可以通过 `$bash hello` 这样的命令运行它，也可以把hello改成一个可执行文件，然后直接运行。
 
 
+---
+
+#	Windows CMD
+
+[批处理命令之精确获取操作系统版本信息](http://blog.csdn.net/clever101/article/details/8453378)
+
+[CMD For 用法](http://club.topsage.com/thread-597580-1-1.html)

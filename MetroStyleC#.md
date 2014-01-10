@@ -37,6 +37,7 @@ Quick Start
 						<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
 						<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
 						<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+						<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
 					</ResourceDictionary.MergedDictionaries>
 				</ResourceDictionary>
 			</Application.Resources>
@@ -114,3 +115,28 @@ Quick Start
 但实际上使用的时候，第二种方法总是还多多少少有些问题，还是第一种比较靠谱。
 
 ---
+
+#	通过配置文件存取程序数据
+
+[.NET 配置文件：为什么这么做，存放在何处，如何使用？ ](http://www.oschina.net/translate/why-where-and-how-of-net-configuration-files)
+
+[古怪的ConfigurationManager类](http://www.cnblogs.com/aotian56/archive/2007/04/10/707419.html)
+
+
+1.	添加引用 .NET -> System.Configuration。
+2.	添加命名空间 `using System.Configuration`。
+3.	修改 Properties\Settings.settings 文件，注意范围要选择为 “用户”， 不然可能会无法正常保存数据。
+4.	通过 `Properties.Settings.Default.KeyName` 读写对应的 KeyValue。但每次写完之后需要 `Properties.Setting.Default.Save()` 以保存。
+5.	配置文件将被存放在 `%APPDATA%/../Local/COMPANY_NAME/EXENAME_Url_HASH/VERSION/user.config` 目录中。
+
+[MSDN](http://msdn.microsoft.com/zh-cn/library/aa730869%28v=vs.80%29.aspx)
+
+[在程序运行过程中刷新 app.config](http://zhidao.baidu.com/link?url=tZ8aQagGMzbEImsuSgLWOuqP0X4-fy1A-8EGEQFFYFKtOgA2gS0zDGcGJny1xZh5E40Mh9kr6-uEm18359PYD_)
+
+
+论字符编码的自动检测
+====================
+
+[原理描述](http://www-archive.mozilla.org/projects/intl/UniversalCharsetDetection.html)
+
+[下载](http://code.google.com/p/nuniversalchardet/)

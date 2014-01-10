@@ -174,4 +174,109 @@
 使用 g++ 编译时添加参数 `-lpthread` 添加对应的库。
 
 
+#	插件的安装包打包
+
+##	Install Shield
+
+使用 InstallShield 进行安装。
+
+InstallShield 中，通常使用大括号 {} 声明变量，一般是程序自动生成的。用中括号 [] 可以调用变量。
+
+变量包括两类。一类是预设内容，比如[AppDataFolder]表示的相当于%APPDATA%；另一类是用户定义的字段，比如我们将项目 KTPlugin 的安装目录设为某某目录，程序生成了一个名为 {KTPLUGIN} 的变量指明该路径，之后就可以通过 [KTPLUGIN] 的方式调用这个变量了。
+
+灵活的使用变量可以使得往注册表中写入数据这件事情变得非常容易。
+
+###	1.	Installation Information
+
+####	General Information
+
+以下内容是基本上需要修改的内容
+
+-	Product Name 
+	-	产品名称。可使用中文名显得比较直观。
+	-	该名称显示在：“安装包文件夹”、“msi文件名”、“运行时的对话框”、“添加/删除程序”
+	-	键值为：
+	
+			HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\<product code>
+	-	 不能使用以下字符： `/ \ : * ? " < > | . -`
+	
+-	Product Version
+	-	版本号
+	-	aaa.bbb.ccccc，最大值为 255.255.65535
+	-	安装程序通过版本号判断是否需要升级。
+	-	显示在“添加/删除程序”中。
+
+-	INSTALLDIR
+	-	程序安装的目录。貌似在后面改掉了之后这里也会跟着改。
+	-	很有可能会需要调用，可以通过[INSTALLDIR]这种方式调用。
+
+####	Update Notifications
+
+需要进一步研究。
+
+感觉上像是跟自动升级相关的内容。但如果使用自动升级的话，好像会在用户电脑上长期开一个进程（尚未测试），容易导致用户不满- =
+
+自动升级什么的还是交给网页来判断好了。如果用户的插件版本小于某值就进行相应提示令用户进行下载。
+
+###	2.	Organization
+
+如果需要添加分支的话就在这里添加，如果不添加的话就无所谓了。
+
+不过添加分支好像很麻烦，不是太推荐。
+
+###	3.	Application Data
+
+####	Files and Folders
+
+在自己的项目中添加需要安装的文件。
+
+如果是需要注册的 ocx 文件，可以在文件上点击右键并选择“Properties” —— “Self Register”
+
+###	4.	System Configuration
+
+####	Registry
+
+HKCU\SOFTWARE\MozillaPlugins\@kingtrust.com/npKTLib\MimeTypes\application/kingtrust-reader-plugin
+
+###	其他：
+
+####	设置安装过程的界面
+
+如果想不显示某些窗口又不知道应该改变那些属性的话，可以考虑去工程助手里面，里面有一页 Installation Interview， 可以设置部分窗口是否进行显示，也可以在左边有个 “Use custom images on dialogs”。 当然这些在 Installation Designer页面也能找到，只是我不知道怎么找。
+
+####	设置安装过程的界面背景
+
+自定义对话框图像的话，通常是定义两种。一种是 banner，尺寸为 499\*58， 一种是 welcom， 尺寸为499\*312，但是中间需要留白一部分内容。
+
+
+####	制作发布用的包
+
+在 工程助手 页面找到最后一页。
+
+第一个可以生成单个的 exe 文件。
+
+第二个可以生成用来放在网页上的自动安装，但是，对于IE浏览器，是通过cab方式安装的，所以需要证书；对于非IE浏览器是通过`<applet>`安装的，所以如果没有JRE的话是不能用的，没有任何提示。所以很坑。  
+而且，这种方式的字符编码应该是 GBK，而不是它默认的那个 1252 代码页。
+
+第四个单个MSI软件包安装方式的话，测试时发现所有的字符串内容都没有成功的生成，不靠谱。
+
+
+#	插件的更新
+
+要更新许多地方…
+
+##	NPAPI
+
+-	Plugin.h 中的版本号定义。
+-	npKTLib.rc 中的 Version项，4处。
+-	changes.txt
+-	firefox\install.rdf
+-	chrome\manifest.json
+
+
+##	ActiveX
+
+-	samclinet.rc 中的 Version 项, 4处。
+-	changes.txt
+-	samclient.inf
 

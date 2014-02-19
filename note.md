@@ -1,52 +1,25 @@
-# SVN
+Visual Studio
+==================================
 
-## 不需要提交的文件
+##	关于Visual Studio 2010 中的 ipch 与 .sdf 文件夹
 
-	.DS_Store
-	build/
-	*.pbxuser
-	!default.pbxuser
-	*.mode1v3
-	!default.mode1v3
-	*.mode2v3
-	!default.mode2v3
-	*.perspectivev3
-	!default.perspectivev3
-	*.xcworkspace
-	!default.xcworkspace
-	xcuserdata
-	profile
-	*.moved-aside
-	DerivedData
-	.idea/ 
-	
-在 Mac 下，可以修改 SVN 的全局设置使其在客户端永远的忽略这些文件。  
-SVN 的配置文件通常是 `~/.subversion/config` 。我们可以修改 `global-ignores` 一项使其在以后忽略这些文件。如下：
+[Visual Studio 2010工程目录下的ipch文件夹和.sdf文件](http://www.cnblogs.com/web100/archive/2012/12/21/vs2010-ipch-sdf.html)
 
-	# global-ignores = *.o *.lo *.la *.al .libs *.so *.so.[0-9]* *.a *.pyc *.pyo
-	#   *.rej *~ #*# .#* .*.swp .DS_Store UserInterfaceState.xcuserstate 
-	#   build/ *.pbxuser !default.pbxuser *.mode1v3 !default.mode1v3 *.mode2v3
-	#   !default.mode2v3 *.perspectivev3 !default.perspectivev3 *.xcworkspace
-	#   !default.xcworkspace xcuserdate profile *.moved-aside DerivedData .idea/
-	
+可以通过某些设置将 ipch 与 .sdf 文件放在单独的文件夹中，避免占用项目文件夹的空间。设置方法如下：
 
-##	清理SVN中的所有.svn文件夹
-
-	find . -type d -name ".svn" -exec rm -rf {} \;
-	
--	find : 查找命令
--	.:在当前目录搜索
--	-type d :类型为目录
--	-name ".svn" :名称
--	-exec:应执行的命令
--	rm -rf: bash中的删除文件夹命令。rm只能删除文件，要删除文件夹就要加上-rf参数。
+-	进入 Tools->Options->Text Editor->C/C++->Advanced，找到 Fallback Location 的属性组
+-	将"Always Use Fallback Location"设置为 true。
+-	将"Do Not Warn If Fallback Location Used" 设置为 true。
+-	将"Fallback Location" 设置为固定路径，可以定期进行清理，释放空间。
+-	删除解决方案目录下的 sdf 文件和 ipch 目录。
 
 
 ---
   
-#	Bash
+Bash
+==================================================
 
-[http://blog.csdn.net/wooin/article/details/580772](http://blog.csdn.net/wooin/article/details/580772)
+http://blog.csdn.net/wooin/article/details/580772
 
 ## 一个简单的 Hello World 程序
 
@@ -62,10 +35,14 @@ SVN 的配置文件通常是 `~/.subversion/config` 。我们可以修改 `globa
 
 我们可以通过 `$bash hello` 这样的命令运行它，也可以把hello改成一个可执行文件，然后直接运行。
 
+##	获取自身路径
 
----
+`dirname "$0"`
 
-#	Windows CMD
+
+Windows CMD
+=================================================
+
 
 [批处理命令之精确获取操作系统版本信息](http://blog.csdn.net/clever101/article/details/8453378)
 
@@ -76,3 +53,17 @@ SVN 的配置文件通常是 `~/.subversion/config` 。我们可以修改 `globa
 
 [XP远程桌面mstsc和带参数的mstsc /console](http://nic.upc.edu.cn/s/2/t/20/03/98/info920.htm)
 
+
+##	获取CMD文件自身路径
+
+可使用 `%~dp0` 。
+
+`%~` 表示使用参数扩展语法。
+`dp` 表示扩展之后的参数为只包含盘符和路径的形式，不包括文件名。
+`0` 表示第0个参数，也就是 .bat 文件自身
+
+##	cd到其他驱动器
+
+使用 `/d` 参数
+
+`cd /d D:/blabla`

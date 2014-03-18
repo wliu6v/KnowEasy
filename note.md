@@ -67,3 +67,27 @@ Windows CMD
 使用 `/d` 参数
 
 `cd /d D:/blabla`
+
+
+
+FTP 命令
+=====================================================
+
+	cd %~dp0
+	ftp -s:publishftp.txt
+	timeout 1
+
+publishftp.txt 内容
+
+	open ftp.xxxx.net
+	YOUR_USERNAME
+	YOUR_PASSWORD
+	cd Share/ftp_directory
+	lcd ./publish
+	send english.html
+	send 中文名.exe
+	bye
+
+直接通过 CMD 中的一行命令进行 ftp 的登录等操作较难实现，比较好的方法是将 ftp 需要进行的操作都放在同一个文本文件中，然后在命令行中使用此文本文件作为参数之一。
+
+需要注意的是，该 ftp 命令文件最好是使用 ascii 编码，避免中文部分在 cmd 中出现乱码。（如 cmd 默认编码不为 ascii 码则需进行其他设置。不知跟 FTP 服务器的编码方式有无关系，需进一步进行确认） 

@@ -67,13 +67,15 @@ SVN (Apache Subversion)。
 
 ##	基本架构
 
-![](http://www.subversion.org.cn/svnbook/nightly/images/ch01dia1.png)
+!
+[](http://www.subversion.org.cn/svnbook/nightly/images/ch01dia1.png)
 
 ##	copy-modify-merge Model 
 
 拷贝-修改-合并 方案。
 
-![copy-modify-merge Model](http://www.subversion.org.cn/svnbook/nightly/images/ch02dia5.png)
+!
+[copy-modify-merge Model](http://www.subversion.org.cn/svnbook/nightly/images/ch02dia5.png)
 
 ##	SVN 库状态
 
@@ -193,7 +195,24 @@ SVN 命令经常存在选项。短选项有一个连字符和一个字母；长�
 可以使用 `--no-ignore` 参数忽略这个忽略列表。
 
 
-#	SVN 分支
+SVN 分支
+==================================================
+
+首先需要知道， svn 内部并没有内在的分支概念，只有拷贝。当拷贝一个目录后，这个结果目录就是一个“分支”，只是因为你给了他这样一个含义而已。包括标签也是如此，只是一个版本目录的copy，只是copy之后不进行任何操作，他就算是一个tag了。
+
+场景：
+
+假设SVN项目名为 svnTest ，且此目录下有三个目录：
+
+-	branches
+-	tags
+-	trunk
+
+首先，进入 svnTest 目录。通过 svn copy 命令将 svnTest/trunk copy到 svnTest/tags/blabla 下。
+
+然后，再次使用 svn copy  命令将 svnTest/trunk copy到 svnTest/branches/blabla 下。
+
+之后对代码进行编辑可以在 branches 的相应标签中进行了。对分支的内容进行修改并及时 commit 。待工作完成后便可以进行 merge 操作，将该分支的内容 merge 到主干，这样服务器上的主干就是从分支合并过去的，是最新的了。然后回到 trunk 目录下并 update，可将本地的主干也更新成最新的。 
 
 
 
